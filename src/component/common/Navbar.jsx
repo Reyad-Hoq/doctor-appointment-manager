@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import Navlink from '../NavLink';
 
 const Navbar = () => {
   const user = null;
@@ -13,7 +14,6 @@ const Navbar = () => {
     <nav className="border-b bg-white">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
 
-        {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-xl font-bold text-white">
             D
@@ -23,31 +23,20 @@ const Navbar = () => {
           </span>
         </Link>
 
-        {/* Menu */}
         <div className="hidden md:flex items-center gap-8">
-          <Link
-            href="/"
-            className="font-medium text-gray-700 hover:text-blue-600"
-          >
-            Home
-          </Link>
+          <Navlink href="/">Home</Navlink>
+          <Navlink href="/doctors">
+            Doctors
+          </Navlink>
+          <Navlink href="/appointments">
+            Appointments
+          </Navlink>
 
-          <Link
-            href="/appointments"
-            className="font-medium text-gray-700 hover:text-blue-600"
-          >
-            All Appointments
-          </Link>
-
-          <Link
-            href="/dashboard"
-            className="font-medium text-gray-700 hover:text-blue-600"
-          >
+          <Navlink href="/dashboard">
             Dashboard
-          </Link>
+          </Navlink>
         </div>
 
-        {/* Auth Section */}
         {!user ? (
           <div className="flex items-center gap-3">
             <Link
