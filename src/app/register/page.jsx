@@ -1,5 +1,7 @@
 import React from 'react';
 import Link from "next/link";
+import { GoGoal } from 'react-icons/go';
+import { BsGoogle } from 'react-icons/bs';
 
 const RegisterPage = () => {
   return (
@@ -86,7 +88,7 @@ const RegisterPage = () => {
         </div>
 
         <button className="w-full rounded-xl border border-slate-200 py-3 font-medium text-slate-700 hover:bg-slate-50">
-          Continue with Google
+          <span className='flex items-center justify-center gap-2'> <BsGoogle className='h-5 w-5' />Continue with Google</span>
         </button>
 
         <p className="mt-6 text-center text-sm text-slate-600">

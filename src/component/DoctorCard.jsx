@@ -61,7 +61,7 @@ const DoctorCard = ({ doctor }) => {
         </div>
 
         <Link
-          href={`/doctor/${doctor._id}`}
+          href={`/doctors/${doctor._id}`}
           className="mt-6 block w-full text-center bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold transition"
         >
           View Details
