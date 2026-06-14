@@ -3,13 +3,15 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import Navlink from '../NavLink';
+import { authClient } from '@/lib/auth-client';
 
 const Navbar = () => {
-  const user = null;
-  // Better Auth theke user asbe
-  // const { data: session } = useSession();
-  // const user = session?.user;
-
+  const { data: session } = authClient.useSession();
+  const user = session?.user;
+  console.log(user)
+  const handleSignOut = async () => {
+    await authClient.signOut();
+  };
   return (
     <nav className="border-b bg-white">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
@@ -25,9 +27,12 @@ const Navbar = () => {
 
         <div className="hidden md:flex items-center gap-8">
           <Navlink href="/">Home</Navlink>
-          <Navlink href="/doctors">
-            Doctors
-          </Navlink>
+          {
+            user ?
+              <Navlink href="/doctors">
+                Doctors
+              </Navlink> : ""
+          }
           <Navlink href="/appointments">
             Appointments
           </Navlink>
@@ -56,14 +61,15 @@ const Navbar = () => {
         ) : (
           <div className="flex items-center gap-3">
             <Image
-              src={user.image}
-              alt={user.name}
+              src={user?.image}
+              alt={user?.name}
               width={40}
               height={40}
               className="rounded-full"
             />
 
             <button
+              onClick={handleSignOut}
               className="rounded-lg bg-red-500 px-4 py-2 text-white hover:bg-red-600"
             >
               Logout

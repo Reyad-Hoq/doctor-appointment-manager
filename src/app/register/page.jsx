@@ -1,15 +1,45 @@
 'use client'
 import React from 'react';
+import {
+  Button,
+  FieldError,
+  Form,
+  Input,
+  Label,
+  TextField,
+} from "@heroui/react";
 import Link from "next/link";
 import { GoGoal } from 'react-icons/go';
 import { BsGoogle } from 'react-icons/bs';
+import { authClient } from '@/lib/auth-client';
+import toast from 'react-hot-toast';
+import { redirect } from 'next/navigation';
 
 const RegisterPage = () => {
+  const handleGoogleSignIn = async () => {
+    await authClient.signIn.social({
+      provider: "google",
+    });
+  };
   const onSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const user = Object.fromEntries(formData.entries());
-    console.log(user);
+    const { data, error } = await authClient.signUp.email({
+      name: user.name,
+      email: user.email,
+      password: user.password,
+      image: user.imageUrl
+    })
+    if (error) {
+      toast.error(error.message)
+      return;
+    }
+    if (data) {
+      toast.success(`${user.name} successfully registered`)
+      redirect('/')
+    }
+
   }
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-emerald-50 flex items-center justify-center px-4">
@@ -29,67 +59,98 @@ const RegisterPage = () => {
           </p>
         </div>
 
-        <form onSubmit={onSubmit} className="mt-8 space-y-5">
-          <div>
-            <label className="mb-2 block text-sm font-medium text-slate-700">
+        <Form
+          onSubmit={onSubmit}
+          className="mt-8 space-y-5"
+        >
+
+          <TextField isRequired name="name">
+            <Label className="mb-2 block text-sm font-medium text-slate-700">
               Full Name
-            </label>
+            </Label>
 
-            <input
-              type="text"
-              name='name'
+            <Input
               placeholder="Your full name"
-              className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-emerald-500"
-              required
+              classNames={{
+                inputWrapper:
+                  "rounded-xl border border-slate-200 bg-white shadow-none data-[focus=true]:border-emerald-500",
+              }}
             />
-          </div>
 
-          <div>
-            <label className="mb-2 block text-sm font-medium text-slate-700">
+            <FieldError />
+          </TextField>
+
+          <TextField
+            isRequired
+            name="email"
+            type="email"
+          >
+            <Label className="mb-2 block text-sm font-medium text-slate-700">
               Email Address
-            </label>
+            </Label>
 
-            <input
-              type="email"
-              name='email'
+            <Input
               placeholder="Enter email"
-              className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-emerald-500"
+              classNames={{
+                inputWrapper:
+                  "rounded-xl border border-slate-200 bg-white shadow-none data-[focus=true]:border-emerald-500",
+              }}
             />
-          </div>
 
-          <div>
-            <label className="mb-2 block text-sm font-medium text-slate-700">
+            <FieldError />
+          </TextField>
+
+          <TextField name="imageUrl">
+            <Label className="mb-2 block text-sm font-medium text-slate-700">
               Photo URL
-            </label>
+            </Label>
 
-            <input
-              type="text"
-              name='imageUrl'
+            <Input
               placeholder="Profile image URL"
-              className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-emerald-500"
+              classNames={{
+                inputWrapper:
+                  "rounded-xl border border-slate-200 bg-white shadow-none data-[focus=true]:border-emerald-500",
+              }}
             />
-          </div>
 
-          <div>
-            <label className="mb-2 block text-sm font-medium text-slate-700">
+            <FieldError />
+          </TextField>
+
+          <TextField
+            isRequired
+            name="password"
+            type="password"
+            minLength={8}
+            validate={(value) => {
+              if (value.length < 8) {
+                return "Password must be at least 8 characters";
+              }
+              return null;
+            }}
+          >
+            <Label className="mb-2 block text-sm font-medium text-slate-700">
               Password
-            </label>
+            </Label>
 
-            <input
-              type="password"
-              name='password'
+            <Input
               placeholder="Create password"
-              className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-emerald-500"
+              classNames={{
+                inputWrapper:
+                  "rounded-xl border border-slate-200 bg-white shadow-none data-[focus=true]:border-emerald-500",
+              }}
             />
-          </div>
 
-          <button
+            <FieldError />
+          </TextField>
+
+          <Button
             type="submit"
-            className="w-full rounded-xl bg-emerald-600 py-3 font-semibold text-white transition hover:bg-emerald-700"
+            className="w-full rounded-xl bg-emerald-600 py-3 font-semibold text-white hover:bg-emerald-700"
           >
             Register
-          </button>
-        </form>
+          </Button>
+
+        </Form>
 
         <div className="my-6 flex items-center gap-3">
           <div className="h-px flex-1 bg-slate-200"></div>
@@ -99,7 +160,7 @@ const RegisterPage = () => {
           <div className="h-px flex-1 bg-slate-200"></div>
         </div>
 
-        <button className="w-full rounded-xl border border-slate-200 py-3 font-medium text-slate-700 hover:bg-slate-50">
+        <button onClick={handleGoogleSignIn} className="w-full rounded-xl border border-slate-200 py-3 font-medium text-slate-700 hover:bg-slate-50">
           <span className='flex items-center justify-center gap-2'> <BsGoogle className='h-5 w-5' />Continue with Google</span>
         </button>
 
