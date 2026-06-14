@@ -1,9 +1,16 @@
+'use client'
 import React from 'react';
 import Link from "next/link";
 import { GoGoal } from 'react-icons/go';
 import { BsGoogle } from 'react-icons/bs';
 
 const RegisterPage = () => {
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const user = Object.fromEntries(formData.entries());
+    console.log(user);
+  }
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-emerald-50 flex items-center justify-center px-4">
       <div className="w-full max-w-lg rounded-3xl border border-slate-200 bg-white p-8 shadow-xl">
@@ -22,7 +29,7 @@ const RegisterPage = () => {
           </p>
         </div>
 
-        <form className="mt-8 space-y-5">
+        <form onSubmit={onSubmit} className="mt-8 space-y-5">
           <div>
             <label className="mb-2 block text-sm font-medium text-slate-700">
               Full Name
@@ -30,8 +37,10 @@ const RegisterPage = () => {
 
             <input
               type="text"
+              name='name'
               placeholder="Your full name"
               className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-emerald-500"
+              required
             />
           </div>
 
@@ -42,6 +51,7 @@ const RegisterPage = () => {
 
             <input
               type="email"
+              name='email'
               placeholder="Enter email"
               className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-emerald-500"
             />
@@ -54,6 +64,7 @@ const RegisterPage = () => {
 
             <input
               type="text"
+              name='imageUrl'
               placeholder="Profile image URL"
               className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-emerald-500"
             />
@@ -66,6 +77,7 @@ const RegisterPage = () => {
 
             <input
               type="password"
+              name='password'
               placeholder="Create password"
               className="w-full rounded-xl border border-slate-200 px-4 py-3 outline-none focus:border-emerald-500"
             />
