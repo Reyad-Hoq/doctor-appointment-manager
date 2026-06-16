@@ -4,13 +4,14 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Navlink from '../NavLink';
 import { authClient } from '@/lib/auth-client';
+import toast from 'react-hot-toast';
 
 const Navbar = () => {
   const { data: session } = authClient.useSession();
   const user = session?.user;
-  console.log(user)
   const handleSignOut = async () => {
     await authClient.signOut();
+    toast.error('logged out successfully')
   };
   return (
     <nav className="border-b bg-white">
@@ -27,12 +28,7 @@ const Navbar = () => {
 
         <div className="hidden md:flex items-center gap-8">
           <Navlink href="/">Home</Navlink>
-          {
-            user ?
-              <Navlink href="/doctors">
-                Doctors
-              </Navlink> : ""
-          }
+
           <Navlink href="/appointments">
             Appointments
           </Navlink>

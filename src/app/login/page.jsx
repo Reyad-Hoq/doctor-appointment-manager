@@ -5,12 +5,14 @@ import { Button, Description, FieldError, Form, Input, Label, TextField } from '
 import { Check } from '@gravity-ui/icons';
 import { GrGoogle } from 'react-icons/gr';
 import { authClient } from '@/lib/auth-client';
+import toast from 'react-hot-toast';
 
 const LogInPage = () => {
   const handleGoogleSignIn = async () => {
     await authClient.signIn.social({
       provider: "google",
     });
+    toast.success('Logged In Successfully')
   };
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -26,7 +28,7 @@ const LogInPage = () => {
     }
     if (data) {
       toast.success(`${user.name} successfully registered`)
-      redirect('/')
+      router.push('/')
     }
   };
   return (

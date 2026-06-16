@@ -75,7 +75,7 @@ const TopDoctors = ({ doctors }) => {
                   </div>
 
                   <Link
-                    href={`/doctors/${doctor._id}`}
+                    href={`/appointments/${doctor._id}`}
                     className="mt-6 block text-center bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold transition"
                   >
                     View Details
