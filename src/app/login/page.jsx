@@ -18,16 +18,18 @@ const LogInPage = () => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const user = Object.fromEntries(formData.entries());
-    const { data, error } = await authClient.signUp.email({
+    const { data, error } = await authClient.signIn.email({
+      name: user.name,
       email: user.email,
       password: user.password,
     })
     if (error) {
+      console.log(error)
       toast.error(error.message)
       return;
     }
     if (data) {
-      toast.success(`${user.name} successfully registered`)
+      toast.success(`${user.name} successfully logged In`)
       router.push('/')
     }
   };
@@ -73,10 +75,7 @@ const LogInPage = () => {
 
             <Input
               placeholder="Enter your email"
-              className={{
-                inputWrapper:
-                  "rounded-xl border border-slate-200 bg-white shadow-none data-[focus=true]:border-blue-500",
-              }}
+
             />
 
             <FieldError className="text-red-500 text-sm mt-1" />
@@ -107,10 +106,6 @@ const LogInPage = () => {
 
             <Input
               placeholder="Enter your password"
-              className={{
-                inputWrapper:
-                  "rounded-xl border border-slate-200 bg-white shadow-none data-[focus=true]:border-blue-500",
-              }}
             />
 
             <Description className="text-xs text-slate-500 mt-1">

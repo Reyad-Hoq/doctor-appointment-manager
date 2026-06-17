@@ -1,6 +1,6 @@
-export async function getDoctor(id) {
+export async function getAppointment(id) {
   const res = await fetch(
-    `http://localhost:8000/doctors/${id}`,
+    `http://localhost:8000/appointments/${id}`,
     {
       cache: "no-store",
     }
@@ -9,4 +9,4 @@ export async function getDoctor(id) {
   if (!res.ok) return null;
 
   return res.json();
-}
+};

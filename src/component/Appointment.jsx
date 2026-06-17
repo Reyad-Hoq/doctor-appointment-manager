@@ -13,13 +13,14 @@ const Appointment = ({ doctor }) => {
   const [appointmentTime, setAppointmentTime] = useState(null);
 
   const handleAppointment = async () => {
-    const { _id, name, } = doctor;
+    const { _id, name, specialty } = doctor;
     const appointmentData = {
       userId: user?.id,
       patientName: user?.name,
       userEmail: user?.email,
       doctorId: _id,
       doctorName: name,
+      specialty,
       gender,
       phone,
       appointmentDate: new Date(appointmentDate),
