@@ -172,5 +172,5 @@ npm start
 
 ## Author
 
-Developed by Reyad Hoq
+Developed by Reyad Hoq ||
 Full-Stack Web Developer
