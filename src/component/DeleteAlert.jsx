@@ -1,9 +1,26 @@
 "use client";
 
 import { AlertDialog, Button } from "@heroui/react";
+import { refresh } from "next/cache";
+import { redirect, useRouter } from "next/navigation";
 
 
-const DeleteAlert = () => {
+const DeleteAlert = ({ item }) => {
+  const router = useRouter();
+
+  const handleDelete = async () => {
+    const { _id } = item;
+    const res = await fetch(`http://localhost:8000/appointment/user/${_id}`, {
+      method: "DELETE",
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+
+    const data = await res.json();
+    router.refresh();
+    // redirect('/dashboard');
+  };
   return (
     <AlertDialog>
       <Button className="rounded-xl bg-red-500 p-5 font-medium text-white hover:bg-red-600 text-[20px]">Delete</Button>
@@ -24,8 +41,8 @@ const DeleteAlert = () => {
               <Button slot="close" variant="tertiary">
                 Cancel
               </Button>
-              <Button slot="close" variant="danger">
-                Delete Appointment
+              <Button onClick={handleDelete} slot="close" variant="danger">
+                Delete
               </Button>
             </AlertDialog.Footer>
           </AlertDialog.Dialog>

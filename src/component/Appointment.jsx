@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { Button, Card, DateField, Description, Input, Label, ListBox, Select, TextField } from "@heroui/react";
+import { Button, Card, DateField, Description, FieldError, Input, Label, ListBox, Select, TextField } from "@heroui/react";
 import { authClient } from '@/lib/auth-client';
 import toast from 'react-hot-toast';
 
@@ -52,12 +52,19 @@ const Appointment = ({ doctor }) => {
           {doctor.description}
         </p>
         <div className="flex flex-col md:flex-row justify-between space-y-1">
-          <DateField onChange={setAppointmentDate} className="w-[256px]" name="appointmentDate" isRequired>
-            <Label>Appointment date</Label>
-            <DateField.Group>
-              <DateField.Input>{(segment) => <DateField.Segment segment={segment} />}</DateField.Input>
-            </DateField.Group>
-          </DateField>
+          <div className="md:col-span-2">
+            <TextField
+              onChange={setAppointmentDate}
+              name="appointmentDate"
+              type="date"
+              isRequired
+            >
+              <Label>Appointment Date</Label>
+              <Input type="date" className="rounded-2xl" />
+              <FieldError />
+            </TextField>
+          </div>
+
           <Select onChange={setAppointmentTime} className="w-[256px]" placeholder="Select one" isRequired>
             <Label>Time</Label>
             <Select.Trigger>

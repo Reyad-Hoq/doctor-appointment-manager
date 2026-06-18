@@ -24,10 +24,10 @@ const DashboardGrid = ({ appointments }) => {
             <div className="flex flex-col items-center">
               <Image
                 src={image}
-                width={60}
-                height={60}
+                width={200}
+                height={200}
                 alt="Profile-photo"
-                className="h-20 w-20 rounded-full border-4 border-blue-100"
+                className="h-18 w-18 rounded-full border-4 border-blue-100"
               />
 
               <h3 className="mt-4 text-lg font-bold text-slate-800">

@@ -19,8 +19,8 @@ const MyProfile = ({ session }) => {
 
         <div className="mt-8 flex flex-col gap-6 md:flex-row md:items-center">
           <Image
-            width={100}
-            height={100}
+            width={300}
+            height={400}
             src={image}
             alt={name}
             className="h-28 w-28 rounded-full border-4 border-emerald-100"

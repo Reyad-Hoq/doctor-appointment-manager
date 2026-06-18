@@ -9,7 +9,8 @@ const DashboardPage = async () => {
   });
   const { id } = session?.user
   const res = await fetch(`http://localhost:8000/appointment/${id}`);
-  const appointments = await res.json()
+  const appointments = await res.json();
+
   return (
     <div>
       <DashboardGrid appointments={appointments} />

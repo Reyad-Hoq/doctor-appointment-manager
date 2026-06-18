@@ -13,13 +13,31 @@ import {
   TextField,
   Select,
 } from "@heroui/react";
+import toast from "react-hot-toast";
 import { BiEdit } from "react-icons/bi";
 
 
-const UpdateModal = () => {
-  const onSubmit = () => {
-    alert('hello world')
+const UpdateModal = ({ item }) => {
+  const { _id, phone, patientName, gender, doctorName, appointmentTime, appointmentDate, } = item;
+  const onSubmit = async (e) => {
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget);
+    const appointment = Object.fromEntries(formData.entries());
+    const res = await fetch(`http://localhost:8000/appointment/user/${_id}`, {
+      method: 'PATCH',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify(appointment),
+    }
+    );
+    const data = await res.json();
+    if (data) {
+      toast.success("updated successfully")
+    }
+    window.location.reload();
   }
+
   return (
     <div>
       <Modal>
@@ -30,152 +48,34 @@ const UpdateModal = () => {
 
         <Modal.Backdrop>
           <Modal.Container placement="auto">
-            <Modal.Dialog className="sm:max-w-xl">
+            <Modal.Dialog className="sm:max-w-md">
               <Modal.CloseTrigger />
               <Modal.Header>
-                <Modal.Heading>Edit Destination</Modal.Heading>
+                <Modal.Heading>Update appointment</Modal.Heading>
               </Modal.Header>
-              <Modal.Body className="p-6">
+              <Modal.Body className="p-1">
                 <Surface variant="default">
-                  <form onSubmit={onSubmit} className="p-10 space-y-8">
+                  <form onSubmit={onSubmit} className="p-10 space-y-2">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                      {/* Destination Name */}
-                      <div className="md:col-span-2">
+                      {/* Appointment Doctor Info */}
+                      <div className="grid grid-cols-2 md:col-span-2">
                         <TextField
-                          defaultValue='destination'
-                          name="destinationName"
-                          isRequired
-                        >
-                          <Label>Destination Name</Label>
-                          <Input
-                            placeholder="Bali Paradise"
-                            className="rounded-2xl"
-                          />
-                          <FieldError />
-                        </TextField>
-                      </div>
-
-                      {/* Country */}
-                      <TextField defaultValue='country' name="country" isRequired>
-                        <Label>Country</Label>
-                        <Input placeholder="Indonesia" className="rounded-2xl" />
-                        <FieldError />
-                      </TextField>
-
-                      {/* Category - Updated Select Component */}
-                      <div>
-                        <Select
-                          defaultValue='category'
-                          name="category"
-                          isRequired
-                          className="w-full"
-                          placeholder="Select category"
-                        >
-                          <Label>Category</Label>
-                          <Select.Trigger className="rounded-2xl">
-                            <Select.Value />
-                            <Select.Indicator />
-                          </Select.Trigger>
-                          <Select.Popover>
-                            <ListBox>
-                              <ListBox.Item id="Beach" textValue="Beach">
-                                Beach
-                                <ListBox.ItemIndicator />
-                              </ListBox.Item>
-                              <ListBox.Item id="Mountain" textValue="Mountain">
-                                Mountain
-                                <ListBox.ItemIndicator />
-                              </ListBox.Item>
-                              <ListBox.Item id="City" textValue="City">
-                                City
-                                <ListBox.ItemIndicator />
-                              </ListBox.Item>
-                              <ListBox.Item id="Adventure" textValue="Adventure">
-                                Adventure
-                                <ListBox.ItemIndicator />
-                              </ListBox.Item>
-                              <ListBox.Item id="Cultural" textValue="Cultural">
-                                Cultural
-                                <ListBox.ItemIndicator />
-                              </ListBox.Item>
-                              <ListBox.Item id="Luxury" textValue="Luxury">
-                                Luxury
-                                <ListBox.ItemIndicator />
-                              </ListBox.Item>
-                            </ListBox>
-                          </Select.Popover>
-                        </Select>
-                      </div>
-
-                      {/* Price */}
-                      <TextField
-                        defaultValue='price'
-                        name="price"
-                        type="number"
-                        isRequired
-                      >
-                        <Label>Price (USD)</Label>
-                        <Input
-                          type="number"
-                          placeholder="1299"
-                          className="rounded-2xl"
-                        />
-                        <FieldError />
-                      </TextField>
-
-                      {/* Duration */}
-                      <TextField
-                        defaultValue='duration'
-                        name="duration"
-                        isRequired
-                      >
-                        <Label>Duration</Label>
-                        <Input
-                          placeholder="7 Days / 6 Nights"
-                          className="rounded-2xl"
-                        />
-                        <FieldError />
-                      </TextField>
-
-                      {/* Departure Date */}
-                      <div className="md:col-span-2">
-                        <TextField
-                          defaultValue='departure'
-                          name="departureDate"
-                          type="date"
-                          isRequired
-                        >
-                          <Label>Departure Date</Label>
-                          <Input type="date" className="rounded-2xl" />
-                          <FieldError />
-                        </TextField>
-                      </div>
-
-                      {/* Image URL - Removed preview */}
-                      <div className="md:col-span-2">
-                        <TextField
-                          defaultValue='no image'
-                          name="imageUrl"
-                          isRequired
-                        >
-                          <Label>Image URL</Label>
-                          <Input
-                            type="url"
-                            placeholder="https://example.com/bali-paradise.jpg"
-                            className="rounded-2xl"
-                          />
-                          <FieldError />
-                        </TextField>
-                      </div>
-
-                      {/* Description */}
-                      <div className="md:col-span-2">
-                        <TextField
-                          defaultValue='description'
+                          defaultValue={doctorName}
                           name="description"
-                          isRequired
+                          isDisabled
                         >
-                          <Label>Description</Label>
+                          <Label>Dr. Name</Label>
+                          <TextArea
+                            className="rounded-3xl"
+                          />
+                          <FieldError />
+                        </TextField>
+                        <TextField
+                          defaultValue={appointmentTime}
+                          name="description"
+                          isDisabled
+                        >
+                          <Label>Appointment Time </Label>
                           <TextArea
                             placeholder="Describe the travel experience..."
                             className="rounded-3xl"
@@ -183,6 +83,69 @@ const UpdateModal = () => {
                           <FieldError />
                         </TextField>
                       </div>
+                      {/* Destination Name */}
+                      <TextField
+                        defaultValue={patientName}
+                        name="patientName"
+                        isRequired
+                      >
+                        <Label>Patient Name</Label>
+                        <Input
+                          placeholder="Jon Doe"
+                          className="rounded-2xl"
+                        />
+                        <FieldError />
+                      </TextField>
+                      {/* Country */}
+                      <TextField defaultValue={phone} name="phone" isRequired>
+                        <Label>Phone Number</Label>
+                        <Input type="number" placeholder="017*****XXX" className="rounded-2xl"
+                          min={0} />
+                        <FieldError />
+                      </TextField>
+
+                      {/* Category - Updated Select Component */}
+                      <div>
+                        <Select
+                          defaultValue={gender}
+                          name="gender"
+                          isRequired
+                          className="w-full"
+                          placeholder="Select gender"
+                        >
+                          <Label>Gender</Label>
+                          <Select.Trigger className="rounded-2xl">
+                            <Select.Value />
+                            <Select.Indicator />
+                          </Select.Trigger>
+                          <Select.Popover>
+                            <ListBox>
+                              <ListBox.Item id="male" textValue="Male">
+                                Male                               <ListBox.ItemIndicator />
+                              </ListBox.Item>
+                              <ListBox.Item id="female" textValue="female">
+                                Female
+                                <ListBox.ItemIndicator />
+                              </ListBox.Item>
+                            </ListBox>
+                          </Select.Popover>
+                        </Select>
+                      </div>
+
+                      {/* Departure Date */}
+                      <div className="md:col-span-2">
+                        <TextField
+                          defaultValue={new Date(appointmentDate).toISOString().split("T")[0]}
+                          name="appointmentDate"
+                          type="date"
+                          isRequired
+                        >
+                          <Label>Appointment Date</Label>
+                          <Input type="date" className="rounded-2xl" />
+                          <FieldError />
+                        </TextField>
+                      </div>
+
                     </div>
 
                     {/* Buttons */}

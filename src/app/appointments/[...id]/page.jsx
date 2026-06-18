@@ -1,5 +1,6 @@
 import Appointment from "@/component/Appointment";
 import DoctorDetails from "@/component/DoctorDetails";
+import UpdateModal from "@/component/UpdateModal";
 
 const DoctorDetailsPage = async ({ params }) => {
   const { id } = await params;
@@ -18,7 +19,6 @@ const DoctorDetailsPage = async ({ params }) => {
         <DoctorDetails doctor={doctor} />
 
         <Appointment doctor={doctor} />
-
       </div>
     </section>
   );
