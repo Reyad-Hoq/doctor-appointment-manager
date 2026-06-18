@@ -19,7 +19,6 @@ const DeleteAlert = ({ item }) => {
 
     const data = await res.json();
     router.refresh();
-    // redirect('/dashboard');
   };
   return (
     <AlertDialog>
