@@ -37,7 +37,7 @@ const RegisterPage = () => {
     }
     if (data) {
       toast.success(`${user.name} successfully registered`)
-      redirect('/')
+      redirect('/login')
     }
 
   }

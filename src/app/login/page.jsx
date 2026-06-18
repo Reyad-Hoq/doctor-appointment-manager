@@ -6,8 +6,10 @@ import { Check } from '@gravity-ui/icons';
 import { GrGoogle } from 'react-icons/gr';
 import { authClient } from '@/lib/auth-client';
 import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 const LogInPage = () => {
+  const router = useRouter();
   const handleGoogleSignIn = async () => {
     await authClient.signIn.social({
       provider: "google",
@@ -29,7 +31,7 @@ const LogInPage = () => {
       return;
     }
     if (data) {
-      toast.success(`${user.name} successfully logged In`)
+      toast.success(`You logged In successfully`)
       router.push('/')
     }
   };

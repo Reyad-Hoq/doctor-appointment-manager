@@ -1,6 +1,7 @@
 import { authClient } from '@/lib/auth-client';
 import Image from 'next/image';
 import React from 'react';
+import UpdateProfile from './UpdateProfile';
 
 const MyProfile = ({ session }) => {
   const { id, name, email, image, phone } = session?.user;
@@ -11,10 +12,7 @@ const MyProfile = ({ session }) => {
           <h2 className="text-2xl font-bold text-slate-800">
             My Profile
           </h2>
-
-          <button className="rounded-xl bg-emerald-600 px-5 py-2 font-medium text-white hover:bg-emerald-700">
-            Update Profile
-          </button>
+          <UpdateProfile session={session} />
         </div>
 
         <div className="mt-8 flex flex-col gap-6 md:flex-row md:items-center">
