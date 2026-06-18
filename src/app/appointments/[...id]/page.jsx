@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 const DoctorDetailsPage = async ({ params }) => {
   const { id } = await params;
   const res = await fetch(
-    `http://localhost:8000/doctors/${id}`
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/doctors/${id}`
   );
   if (!res.ok) {
     notFound();

@@ -13,7 +13,9 @@ const Appointment = ({ doctor }) => {
   const [appointmentTime, setAppointmentTime] = useState(null);
 
   const handleAppointment = async () => {
+
     const { _id, name, specialty } = doctor;
+
     const appointmentData = {
       userId: user?.id,
       patientName: user?.name,
@@ -26,20 +28,29 @@ const Appointment = ({ doctor }) => {
       appointmentDate: new Date(appointmentDate),
       appointmentTime,
     }
-    console.log(appointmentData)
-    const res = await fetch('http://localhost:8000/appointment', {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
+    const { data: tokenData } = await authClient.token();
+    console.log(tokenData)
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/appointment`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          authorization: `Bearer ${tokenData.token}`
+        },
+        body: JSON.stringify(appointmentData),
+      });
 
-      },
-      body: JSON.stringify(appointmentData),
-    })
-    const data = await res.json();
-    toast.success('Your appointment booked Successfully')
-  }
+      if (!res.ok) {
+        throw new Error('Failed to book appointment');
+      }
 
+      const data = await res.json();
 
+      toast.success('Your appointment booked Successfully');
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
   return (
     <div>
       <Card className="bg-white mt-8 rounded-3xl shadow-lg p-8 text-center">
@@ -51,74 +62,76 @@ const Appointment = ({ doctor }) => {
         <p className="text-slate-600 leading-8">
           {doctor.description}
         </p>
-        <div className="flex flex-col md:flex-row justify-between space-y-1">
-          <div className="md:col-span-2">
-            <TextField
-              onChange={setAppointmentDate}
-              name="appointmentDate"
-              type="date"
-              isRequired
-            >
-              <Label>Appointment Date</Label>
-              <Input type="date" className="rounded-2xl" />
-              <FieldError />
-            </TextField>
-          </div>
+        <form onSubmit={handleAppointment}>
+          <div className="flex flex-col md:flex-row justify-between space-y-1">
+            <div className="md:col-span-2">
+              <TextField
+                onChange={setAppointmentDate}
+                name="appointmentDate"
+                type="date"
+                isRequired
+              >
+                <Label>Appointment Date</Label>
+                <Input type="date" className="rounded-2xl" />
+                <FieldError />
+              </TextField>
+            </div>
 
-          <Select onChange={setAppointmentTime} className="w-[256px]" placeholder="Select one" isRequired>
-            <Label>Time</Label>
-            <Select.Trigger>
-              <Select.Value />
-              <Select.Indicator />
-            </Select.Trigger>
-            <Select.Popover>
-              <ListBox>
-                {
-                  doctor.availability.map((time, ind) =>
-                    <ListBox.Item key={ind} id={time} textValue={time}>
-                      {time}
-                      <ListBox.ItemIndicator />
-                    </ListBox.Item>
-                  )
-                }
-              </ListBox>
-            </Select.Popover>
-          </Select>
-          <TextField onChange={setPhone} isRequired className="w-full max-w-64 text-start" name="phone">
-            <Label>Phone Number</Label>
-            <Input type='number' placeholder="017XXXXXXXX" />
-          </TextField>
-          <Select onChange={setGender} className="w-[256px]" placeholder="Select one" isRequired>
-            <Label>Gender</Label>
-            <Select.Trigger>
-              <Select.Value />
-              <Select.Indicator />
-            </Select.Trigger>
-            <Select.Popover>
-              <ListBox>
-                <ListBox.Item id="male" textValue="Male">
-                  Male
-                  <ListBox.ItemIndicator />
-                </ListBox.Item>
-                <ListBox.Item id="female" textValue="Female">
-                  Female
-                  <ListBox.ItemIndicator />
-                </ListBox.Item>
-              </ListBox>
-            </Select.Popover>
-          </Select>
-        </div>
-        <div>
-          <Button
-            onClick={handleAppointment}
-            variant='primary'
-            className=' w-full bg-blue-600 hover:bg-blue-500 transition-normal'
-          >
-            Book Appointment
-          </Button>
-        </div>
+            <Select onChange={setAppointmentTime} className="w-[256px]" placeholder="Select one" isRequired>
+              <Label>Time</Label>
+              <Select.Trigger>
+                <Select.Value />
+                <Select.Indicator />
+              </Select.Trigger>
+              <Select.Popover>
+                <ListBox>
+                  {
+                    doctor.availability.map((time, ind) =>
+                      <ListBox.Item key={ind} id={time} textValue={time}>
+                        {time}
+                        <ListBox.ItemIndicator />
+                      </ListBox.Item>
+                    )
+                  }
+                </ListBox>
+              </Select.Popover>
+            </Select>
+            <TextField onChange={setPhone} isRequired className="w-full max-w-64 text-start" name="phone">
+              <Label>Phone Number</Label>
+              <Input type='number' placeholder="017XXXXXXXX" />
+            </TextField>
+            <Select onChange={setGender} className="w-[256px]" placeholder="Select one" isRequired>
+              <Label>Gender</Label>
+              <Select.Trigger>
+                <Select.Value />
+                <Select.Indicator />
+              </Select.Trigger>
+              <Select.Popover>
+                <ListBox>
+                  <ListBox.Item id="male" textValue="Male">
+                    Male
+                    <ListBox.ItemIndicator />
+                  </ListBox.Item>
+                  <ListBox.Item id="female" textValue="Female">
+                    Female
+                    <ListBox.ItemIndicator />
+                  </ListBox.Item>
+                </ListBox>
+              </Select.Popover>
+            </Select>
+          </div>
+          <div>
+            <Button
+              type='submit'
+              variant='primary'
+              className=' w-full bg-blue-600 hover:bg-blue-500 transition-normal'
+            >
+              Book Appointment
+            </Button>
+          </div>
+        </form>
       </Card>
-    </div>
+    </div >
   );
 };
 

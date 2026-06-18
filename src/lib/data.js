@@ -1,6 +1,6 @@
 export async function getAppointment(id) {
   const res = await fetch(
-    `http://localhost:8000/appointments/${id}`,
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/appointments/${id}`,
     {
       cache: "no-store",
     }

@@ -13,8 +13,9 @@ const LogInPage = () => {
   const handleGoogleSignIn = async () => {
     await authClient.signIn.social({
       provider: "google",
+      callbackURL: "/"
     });
-    toast.success('Logged In Successfully')
+
   };
   const onSubmit = async (e) => {
     e.preventDefault();

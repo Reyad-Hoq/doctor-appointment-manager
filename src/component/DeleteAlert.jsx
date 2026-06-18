@@ -10,7 +10,7 @@ const DeleteAlert = ({ item }) => {
 
   const handleDelete = async () => {
     const { _id } = item;
-    const res = await fetch(`http://localhost:8000/appointment/user/${_id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/appointment/user/${_id}`, {
       method: "DELETE",
       headers: {
         "content-type": "application/json",

@@ -23,7 +23,7 @@ const UpdateModal = ({ item }) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget);
     const appointment = Object.fromEntries(formData.entries());
-    const res = await fetch(`http://localhost:8000/appointment/user/${_id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/appointment/user/${_id}`, {
       method: 'PATCH',
       headers: {
         'content-type': 'application/json',
